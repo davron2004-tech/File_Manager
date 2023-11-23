@@ -9,18 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query var files:[Folder]
     @State var searchText = ""
-    @State var mockFolders:[String] = ["One","Two","Three","Four"]
-    var body: some View{
+    var body: some View {
         NavigationStack{
-            FolderView(mockFolders: $mockFolders)
-                .navigationTitle("Home")
+            FolderView(title: "Home", parentFolder:nil)
         }
-        .searchable(text: $searchText)
-        
-        
+        .padding()
     }
 }
 

@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct FolderView: View {
+    @Environment(\.modelContext) var modelContext
+    var title:String
+    var parentFolder:Folder?
+    @Query(filter: #Predicate<Folder>{
+        folder in
+        folder.parentFolder == nil
+    }) var rootFolders:[Folder]
     @State var searchText = ""
-    @Binding var mockFolders:[String]
     @State var showingAlert = false
     @State var newFolderName:String = ""
     let columns = [
@@ -23,9 +29,8 @@ struct FolderView: View {
                 geo in
                 ScrollView{
                     LazyVGrid(columns: columns,spacing: 15){
-                        ForEach(mockFolders, id: \.self){folderName in
-                            FolderCell(folderName: folderName)
-                                
+                        ForEach(parentFolder?.folders ?? rootFolders, id: \.self){folder in
+                            FolderCell(folder: folder, folderName: folder.folderName)
                         }
                         
                     }
@@ -38,10 +43,11 @@ struct FolderView: View {
                     }label: {
                         Image(systemName: "plus")
                     }
-
+                    
                 }
                 
             }
+            .navigationTitle(title)
             
         }
         .onTapGesture{
@@ -51,16 +57,25 @@ struct FolderView: View {
             TextField("Name", text: $newFolderName)
             Button{
                 if(newFolderName != ""){
-                    mockFolders.append(newFolderName)
+                    
+                    if let safeFolder = parentFolder{
+                        let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: safeFolder)
+                        safeFolder.folders.append(newFolder)
+                    }
+                    else{
+                        let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: nil)
+                        modelContext.insert(newFolder)
+                    }
+                    newFolderName = ""
                 }
             }label: {
                 Text("Add")
             }
-            } message: {
-                Text("Enter new folder name")
-            }
-        .searchable(text: $searchText)
-        .padding()
+        } message: {
+            Text("Enter new folder name")
+        }
+        .padding(.top)
+        
     }
 }
 

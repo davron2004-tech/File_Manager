@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct FolderCell: View {
+    @Environment(\.modelContext) var modelContext
+    var folder:Folder
     @State var folderName:String
     @State var isEdit = false
     @FocusState var isFocus:Bool
+    @State var showingAlert = false
     var body: some View {
         NavigationLink{
-            
+            FolderView(title: folderName, parentFolder:folder)
         }label: {
             VStack{
                 Image(systemName: "folder.fill")
@@ -33,9 +36,13 @@ struct FolderCell: View {
                             if(folderName != ""){
                                 isEdit = false
                                 isFocus = false
+                                folder.folderName = folderName
                             }
-                            
+                            else{
+                                showingAlert = true
+                            }
                         }
+                        
                 }
                 else{
                     Text(folderName)
@@ -49,12 +56,27 @@ struct FolderCell: View {
                 }label: {
                     Label("Rename", systemImage: "pencil")
                 }
+                Button{
+                    
+                }label: {
+                    Label("Delete", systemImage: "trash")
+                }
             }
             
+            
+            
+        }
+        
+        
+        .alert("Folder name cannot be empty!", isPresented: $showingAlert) {
+            Button("OK", role: .cancel) {
+                folderName = "untitled folder"
+            }
+        }
+        .onAppear{
+            folderName = folder.folderName
         }
         
     }
 }
-#Preview {
-    FolderCell(folderName: "Hello")
-}
+
