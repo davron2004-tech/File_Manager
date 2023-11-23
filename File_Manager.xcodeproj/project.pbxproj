@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD109FFE2B0E2832003BBF5F /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109FFD2B0E2832003BBF5F /* FolderCell.swift */; };
+		DD10A0002B0E3772003BBF5F /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109FFF2B0E3772003BBF5F /* FolderView.swift */; };
 		DDADB7042B0E23DE003E340C /* File_ManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB7032B0E23DE003E340C /* File_ManagerApp.swift */; };
-		DDADB7062B0E23DE003E340C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB7052B0E23DE003E340C /* ContentView.swift */; };
-		DDADB7082B0E23DE003E340C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB7072B0E23DE003E340C /* Item.swift */; };
+		DDADB7062B0E23DE003E340C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB7052B0E23DE003E340C /* HomeView.swift */; };
+		DDADB7082B0E23DE003E340C /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB7072B0E23DE003E340C /* Folder.swift */; };
 		DDADB70A2B0E23DF003E340C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDADB7092B0E23DF003E340C /* Assets.xcassets */; };
 		DDADB70D2B0E23DF003E340C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDADB70C2B0E23DF003E340C /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD109FFD2B0E2832003BBF5F /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
+		DD109FFF2B0E3772003BBF5F /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		DDADB7002B0E23DE003E340C /* File_Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = File_Manager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDADB7032B0E23DE003E340C /* File_ManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File_ManagerApp.swift; sourceTree = "<group>"; };
-		DDADB7052B0E23DE003E340C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		DDADB7072B0E23DE003E340C /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		DDADB7052B0E23DE003E340C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		DDADB7072B0E23DE003E340C /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		DDADB7092B0E23DF003E340C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDADB70C2B0E23DF003E340C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,8 +58,10 @@
 			isa = PBXGroup;
 			children = (
 				DDADB7032B0E23DE003E340C /* File_ManagerApp.swift */,
-				DDADB7052B0E23DE003E340C /* ContentView.swift */,
-				DDADB7072B0E23DE003E340C /* Item.swift */,
+				DDADB7072B0E23DE003E340C /* Folder.swift */,
+				DDADB7052B0E23DE003E340C /* HomeView.swift */,
+				DD109FFF2B0E3772003BBF5F /* FolderView.swift */,
+				DD109FFD2B0E2832003BBF5F /* FolderCell.swift */,
 				DDADB7092B0E23DF003E340C /* Assets.xcassets */,
 				DDADB70B2B0E23DF003E340C /* Preview Content */,
 			);
@@ -140,9 +146,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDADB7062B0E23DE003E340C /* ContentView.swift in Sources */,
-				DDADB7082B0E23DE003E340C /* Item.swift in Sources */,
+				DD10A0002B0E3772003BBF5F /* FolderView.swift in Sources */,
+				DDADB7062B0E23DE003E340C /* HomeView.swift in Sources */,
+				DDADB7082B0E23DE003E340C /* Folder.swift in Sources */,
 				DDADB7042B0E23DE003E340C /* File_ManagerApp.swift in Sources */,
+				DD109FFE2B0E2832003BBF5F /* FolderCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
