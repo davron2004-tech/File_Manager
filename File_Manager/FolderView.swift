@@ -10,7 +10,7 @@ import SwiftData
 struct FolderView: View {
     @Environment(\.modelContext) var modelContext
     var title:String
-    var parentFolder:Folder?
+    @State var parentFolder:Folder?
     @Query(filter: #Predicate<Folder>{
         folder in
         folder.parentFolder == nil
@@ -18,6 +18,7 @@ struct FolderView: View {
     @State var searchText = ""
     @State var showingAlert = false
     @State var newFolderName:String = ""
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -30,7 +31,7 @@ struct FolderView: View {
                 ScrollView{
                     LazyVGrid(columns: columns,spacing: 15){
                         ForEach(parentFolder?.folders ?? rootFolders, id: \.self){folder in
-                            FolderCell(folder: folder, folderName: folder.folderName)
+                            FolderCell(folder: folder, folderName: folder.folderName, folders: parentFolder?.folders ?? rootFolders)
                         }
                         
                     }

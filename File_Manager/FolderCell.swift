@@ -14,6 +14,8 @@ struct FolderCell: View {
     @State var isEdit = false
     @FocusState var isFocus:Bool
     @State var showingAlert = false
+    @State var folders:[Folder]
+    @State var order = 0
     var body: some View {
         NavigationLink{
             FolderView(title: folderName, parentFolder:folder)
@@ -57,7 +59,16 @@ struct FolderCell: View {
                     Label("Rename", systemImage: "pencil")
                 }
                 Button{
-                    
+                    for folderOf in folders{
+                        if folder == folderOf{
+                            folders.remove(at: order)
+                            modelContext.delete(folder)
+                        }
+                        else{
+                            order += 1
+                        }
+                        
+                    }
                 }label: {
                     Label("Delete", systemImage: "trash")
                 }
