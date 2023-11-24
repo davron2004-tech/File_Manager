@@ -10,15 +10,11 @@ import SwiftData
 struct FolderView: View {
     @Environment(\.modelContext) var modelContext
     var title:String
-    @State var parentFolder:Folder?
-    @Query(filter: #Predicate<Folder>{
-        folder in
-        folder.parentFolder == nil
-    }) var rootFolders:[Folder]
+    var parentFolder:Folder?
+    @Query var allFolders:[Folder]
     @State var searchText = ""
     @State var showingAlert = false
     @State var newFolderName:String = ""
-    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -26,14 +22,17 @@ struct FolderView: View {
     ]
     var body: some View {
         NavigationStack{
-            GeometryReader{
-                geo in
-                ScrollView{
-                    LazyVGrid(columns: columns,spacing: 15){
-                        ForEach(parentFolder?.folders ?? rootFolders, id: \.self){folder in
-                            FolderCell(folder: folder, folderName: folder.folderName, folders: parentFolder?.folders ?? rootFolders)
+            ScrollView{
+                LazyVGrid(columns: columns,spacing: 15){
+                    ForEach(allFolders.filter{folder in
+                        if parentFolder != nil{
+                            return folder.parentFolder == parentFolder
                         }
-                        
+                        else{
+                            return folder.parentFolder == nil
+                        }
+                    }, id: \.self){folder in
+                        FolderCell(folder: folder, folderName: folder.folderName, folders: allFolders)
                     }
                 }
             }
@@ -58,12 +57,13 @@ struct FolderView: View {
             TextField("Name", text: $newFolderName)
             Button{
                 if(newFolderName != ""){
-                    
                     if let safeFolder = parentFolder{
+                        print(safeFolder.folderName)
                         let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: safeFolder)
-                        safeFolder.folders.append(newFolder)
+                        modelContext.insert(newFolder)
                     }
                     else{
+                        print(parentFolder?.folderName)
                         let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: nil)
                         modelContext.insert(newFolder)
                     }
@@ -74,6 +74,14 @@ struct FolderView: View {
             }
         } message: {
             Text("Enter new folder name")
+        }
+        .onAppear{
+            let rootFolders = allFolders.filter{
+                $0.parentFolder == nil
+            }
+            for folder in allFolders {
+                print("Parent of \(folder.folderName) is \(folder.parentFolder?.folderName)")
+            }
         }
         .padding(.top)
         
