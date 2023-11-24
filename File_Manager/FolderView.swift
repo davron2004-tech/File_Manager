@@ -23,15 +23,10 @@ struct FolderView: View {
         NavigationStack{
             ScrollView{
                 LazyVGrid(columns: columns,spacing: 15){
-                    ForEach(allFolders.filter{folder in
-                        if parentFolder != nil{
-                            return folder.parentFolder == parentFolder
-                        }
-                        else{
-                            return folder.parentFolder == nil
-                        }
+                    ForEach(parentFolder?.childFolders ?? allFolders.filter{
+                        $0.parentFolder == nil
                     }, id: \.self){folder in
-                        FolderCell(folder: folder, folderName: folder.folderName, folders: allFolders)
+                        FolderCell(folder: folder, folderName: folder.folderName,delegate:self)
                     }
                 }
             }
@@ -55,19 +50,7 @@ struct FolderView: View {
         .alert("New Folder", isPresented: $showingAlert) {
             TextField("Name", text: $newFolderName)
             Button{
-                if(newFolderName != ""){
-                    if let safeFolder = parentFolder{
-                        print(safeFolder.folderName)
-                        let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: safeFolder)
-                        modelContext.insert(newFolder)
-                    }
-                    else{
-                        print(parentFolder?.folderName)
-                        let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: nil)
-                        modelContext.insert(newFolder)
-                    }
-                    newFolderName = ""
-                }
+                addFolder()
             }label: {
                 Text("Add")
             }
@@ -77,8 +60,43 @@ struct FolderView: View {
         .padding(.top)
         
     }
+    func addFolder(){
+        if(newFolderName != ""){
+            if let safeFolder = parentFolder{
+                let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: safeFolder)
+                safeFolder.childFolders.append(newFolder)
+                try? modelContext.save()
+            }
+            else{
+                let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: nil)
+                modelContext.insert(newFolder)
+            }
+            newFolderName = ""
+        }
+    }
     func deleteFolder(folder:Folder){
-        
+        var order = 0
+        if let safeFolder = parentFolder{
+            for folder1 in safeFolder.childFolders{
+                if folder.folderName == folder1.folderName{
+                    parentFolder!.childFolders.remove(at: order)
+                    try? modelContext.save()
+                }
+                else{
+                    order += 1
+                }
+            }
+        }
+        else{
+            for folder1 in allFolders{
+                if folder.folderName == folder1.folderName{
+                    modelContext.delete(folder)
+                }
+                else{
+                    order += 1
+                }
+            }
+        }
     }
 }
 

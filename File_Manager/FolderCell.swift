@@ -16,7 +16,7 @@ struct FolderCell: View {
     var delegate:FolderView
     var body: some View {
         NavigationLink{
-            FolderView(title: folderName, parentFolder:folder)
+            FolderView(parentFolder:folder)
         }label: {
             VStack{
                 Image(systemName: "folder.fill")
@@ -57,7 +57,7 @@ struct FolderCell: View {
                     Label("Rename", systemImage: "pencil")
                 }
                 Button{
-                    
+                    delegate.deleteFolder(folder: folder)
                 }label: {
                     Label("Delete", systemImage: "trash")
                 }

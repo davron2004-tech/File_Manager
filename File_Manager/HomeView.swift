@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State var searchText = ""
     var body: some View {
         NavigationStack{
-            FolderView(title: "Home", parentFolder:nil)
+            FolderView(parentFolder:nil)
         }
         .padding()
     }
