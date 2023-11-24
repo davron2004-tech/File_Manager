@@ -25,7 +25,7 @@ struct FolderView: View {
                 LazyVGrid(columns: columns,spacing: 15){
                     ForEach(parentFolder?.childFolders ?? allFolders.filter{
                         $0.parentFolder == nil
-                    }, id: \.self){folder in
+                    }){folder in
                         FolderCell(folder: folder, folderName: folder.folderName,delegate:self)
                     }
                 }

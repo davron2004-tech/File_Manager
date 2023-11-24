@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 class Folder {
+    var id = UUID()
     var folderName:String
     var parentFolder:Folder?
     @Relationship(deleteRule:.cascade) var childFolders:[Folder] = []
