@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct FolderCell: View {
-    @Environment(\.modelContext) var modelContext
     var folder:Folder
     @State var folderName:String
     @State var isEdit = false
     @FocusState var isFocus:Bool
     @State var showingAlert = false
-    @State var folders:[Folder]
+    var delegate:FolderView
     var body: some View {
         NavigationLink{
             FolderView(title: folderName, parentFolder:folder)

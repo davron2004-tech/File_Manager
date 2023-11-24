@@ -11,8 +11,9 @@ import SwiftData
 @Model
 class Folder {
     var folderName:String
-    @Relationship(inverse:.none) var parentFolder:Folder?
+    var parentFolder:Folder?
     var files:[Data] = []
+    @Relationship(deleteRule:.cascade) var childFolders:[Folder] = []()
     var createDate:Date
     var modifyDate:Date
     var location:String

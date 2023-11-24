@@ -9,9 +9,8 @@ import SwiftUI
 import SwiftData
 struct FolderView: View {
     @Environment(\.modelContext) var modelContext
-    var title:String
-    var parentFolder:Folder?
     @Query var allFolders:[Folder]
+    var parentFolder:Folder?
     @State var searchText = ""
     @State var showingAlert = false
     @State var newFolderName:String = ""
@@ -47,7 +46,7 @@ struct FolderView: View {
                 }
                 
             }
-            .navigationTitle(title)
+            .navigationTitle(parentFolder?.folderName ?? "Home")
             
         }
         .onTapGesture{
@@ -75,15 +74,10 @@ struct FolderView: View {
         } message: {
             Text("Enter new folder name")
         }
-        .onAppear{
-            let rootFolders = allFolders.filter{
-                $0.parentFolder == nil
-            }
-            for folder in allFolders {
-                print("Parent of \(folder.folderName) is \(folder.parentFolder?.folderName)")
-            }
-        }
         .padding(.top)
+        
+    }
+    func deleteFolder(folder:Folder){
         
     }
 }
