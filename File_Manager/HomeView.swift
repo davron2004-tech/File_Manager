@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct HomeView: View {
+    
     var body: some View {
         NavigationStack{
-            FolderView(parentFolder:nil)
+            VStack{
+                FolderView(parentFolder:nil)
+                
+            }
+            
         }
         .padding()
     }

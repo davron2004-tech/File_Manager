@@ -14,6 +14,19 @@ struct FolderView: View {
     @State var searchText = ""
     @State var showingAlert = false
     @State var newFolderName:String = ""
+    var contentsToShow:[Folder]{
+        let contents = parentFolder?.childFolders ?? allFolders.filter{
+            $0.parentFolder == nil
+        }
+        if searchText != ""{
+            return contents.filter{
+                $0.folderName.contains(searchText)
+            }
+        }
+        else{
+            return contents
+        }
+    }
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -21,15 +34,29 @@ struct FolderView: View {
     ]
     var body: some View {
         NavigationStack{
-            ScrollView{
-                LazyVGrid(columns: columns,spacing: 15){
-                    ForEach(parentFolder?.childFolders ?? allFolders.filter{
-                        $0.parentFolder == nil
-                    }){folder in
-                        FolderCell(folder: folder, folderName: folder.folderName,delegate:self)
+            VStack{
+                HStack{
+                    TextField("Search", text: $searchText)
+                    Spacer()
+                    Button{
+                        dismissKeyboard()
+                    }label: {
+                        Image(systemName: "magnifyingglass")
+                    }
+                }
+                .foregroundStyle(.secondary)
+                .padding(.all,8)
+                .background(Color("SearchBarColor"))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                ScrollView{
+                    LazyVGrid(columns: columns,spacing: 15){
+                        ForEach(contentsToShow){folder in
+                            FolderCell(folder: folder, folderName: folder.folderName,delegate:self)
+                        }
                     }
                 }
             }
+            
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing) {
                     Button{
@@ -45,7 +72,7 @@ struct FolderView: View {
             
         }
         .onTapGesture{
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            dismissKeyboard()
         }
         .alert("New Folder", isPresented: $showingAlert) {
             TextField("Name", text: $newFolderName)
@@ -59,6 +86,9 @@ struct FolderView: View {
         }
         .padding(.top)
         
+    }
+    func dismissKeyboard(){
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     func addFolder(){
         if(newFolderName != ""){
