@@ -71,6 +71,7 @@ struct FolderView: View {
             .navigationTitle(parentFolder?.folderName ?? "Home")
             
         }
+        .padding()
         .onTapGesture{
             dismissKeyboard()
         }
@@ -93,12 +94,25 @@ struct FolderView: View {
     func addFolder(){
         if(newFolderName != ""){
             if let safeFolder = parentFolder{
-                let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: safeFolder)
+                var parents:[String] = []
+                var tempParent = parentFolder
+                while(tempParent != nil){
+                    parents.append(tempParent!.folderName)
+                    tempParent = tempParent?.parentFolder
+                }
+                parents = parents.reversed()
+                var location = "~"
+                for directory in parents{
+                    location.append(" -> ")
+                    location.append(directory)
+                }
+                let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: location, parentFolder: safeFolder)
                 safeFolder.childFolders.append(newFolder)
+                safeFolder.modifyDate = Date()
                 try? modelContext.save()
             }
             else{
-                let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "", parentFolder: nil)
+                let newFolder = Folder(folderName: newFolderName, createDate: Date(), location: "~", parentFolder: nil)
                 modelContext.insert(newFolder)
             }
             newFolderName = ""

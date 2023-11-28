@@ -13,6 +13,7 @@ struct FolderCell: View {
     @State var isEdit = false
     @FocusState var isFocus:Bool
     @State var showingAlert = false
+    @State var showingInfo = false
     var delegate:FolderView
     var body: some View {
         NavigationLink{
@@ -37,6 +38,7 @@ struct FolderCell: View {
                                 isEdit = false
                                 isFocus = false
                                 folder.folderName = folderName
+                                folder.modifyDate = Date()
                             }
                             else{
                                 showingAlert = true
@@ -51,6 +53,11 @@ struct FolderCell: View {
             }
             .contextMenu{
                 Button{
+                    showingInfo = true
+                }label: {
+                    Label("Get Info", systemImage: "info.circle")
+                }
+                Button{
                     isEdit = true
                     isFocus = true
                 }label: {
@@ -62,16 +69,17 @@ struct FolderCell: View {
                     Label("Delete", systemImage: "trash")
                 }
             }
-            
-            
-            
         }
-        
-        
+        .padding()
         .alert("Folder name cannot be empty!", isPresented: $showingAlert) {
             Button("OK", role: .cancel) {
                 folderName = "untitled folder"
             }
+        }
+        .sheet(isPresented: $showingInfo){
+            InfoView(folder: folder)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
         }
         
     }
