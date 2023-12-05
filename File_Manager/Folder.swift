@@ -25,6 +25,5 @@ class Folder {
         self.location = location
         self.parentFolder = parentFolder
         self.location = location
-        
     }
 }

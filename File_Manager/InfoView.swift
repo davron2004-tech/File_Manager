@@ -8,7 +8,8 @@
 import SwiftUI
 import Foundation
 struct InfoView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss)
+    var dismiss
     var folder:Folder
     var body: some View {
         NavigationStack{
@@ -30,7 +31,7 @@ struct InfoView: View {
                     Text("Size")
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text(String(sizeof(folder)))
+                    Text(String(sizeOfObject()))
                 }
                 Divider()
                 HStack{
@@ -69,10 +70,28 @@ struct InfoView: View {
         
         .padding(.horizontal)
     }
-    func sizeof <T> (_ : T) -> Int
-    {
-        return (MemoryLayout<T>.size)
-    }
+    func sizeOfObject() -> Int {
+            var size = 0
+
+            // Add size of properties
+            size += MemoryLayout.size(ofValue: folder.id)
+            size += MemoryLayout.size(ofValue: folder.folderName)
+            size += MemoryLayout.size(ofValue: folder.createDate)
+            size += MemoryLayout.size(ofValue: folder.modifyDate)
+            size += MemoryLayout.size(ofValue: folder.location)
+
+            // Recursively add size of child folders
+            for childFolder in folder.childFolders {
+                size += MemoryLayout.size(ofValue: childFolder)
+            }
+
+            // Add size of files (assuming each file is a Data object)
+            for file in folder.files {
+                size += MemoryLayout.size(ofValue: file)
+            }
+
+            return size
+        }
 }
 
 extension Date {
